@@ -17,7 +17,6 @@ public class PlayerMove : MonoBehaviour{
     void Update()
     {
 
-        Debug.Log(step);
 
         if (step == 1)
         {
@@ -57,6 +56,50 @@ public class PlayerMove : MonoBehaviour{
     {
         step = 2;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    int  func(int a, int b)
+    {
+        return a + b;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
