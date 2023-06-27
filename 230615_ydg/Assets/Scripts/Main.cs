@@ -8,6 +8,7 @@ public class Main : MonoBehaviour{
 
 
     void Start(){
+
         characterList = new List<Character>();
 
         PrintAllCharacter();

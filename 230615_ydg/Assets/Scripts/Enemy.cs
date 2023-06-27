@@ -1,6 +1,6 @@
 using System;
 
-public class Enemy {
+public class Enemy  {
     public enum EnemyType{
         Basic = 0,
         Range,
