@@ -28,13 +28,6 @@ public class EnemyObject : MonoBehaviour{
     }
 
 
-    private void Start(){
-       // SetEnemy(new Enemy(Enemy.EnemyType.Basic, 100, 10, 3.0f));
-    }
-
-
-
-
     private void Update(){
         if (enemy == null) return;
         MoveEnemy();
@@ -50,6 +43,15 @@ public class EnemyObject : MonoBehaviour{
             this.transform.position -= new Vector3(0, enemy.Speed * Time.deltaTime, 0);
         }
 
+    }
+
+
+    public void Hit(int dmg){
+
+        if (enemy.Hp - dmg <= 0) Destroy(this.gameObject);
+
+        enemy.Hit(dmg);
+        this.hpbar.value = enemy.Hp;
     }
 
 

@@ -19,7 +19,13 @@ public class Bullet : MonoBehaviour{
 
 
     public void OnCollisionEnter2D(Collision2D col){
-        
+
+        if(col.collider.tag == "Enemy")
+        {
+            col.collider.gameObject.GetComponent<EnemyObject>().Hit(this.dmg);
+            Destroy(this.gameObject);
+        }
+
     }
 
 

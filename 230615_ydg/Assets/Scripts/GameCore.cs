@@ -23,11 +23,9 @@ public class GameCore : MonoBehaviour{
 
     // Update is called once per frame
     void Update(){
-
         delay += Time.deltaTime;
 
-        if(delay >= 1f)
-        {
+        if(delay >= 1f){
             delay = 0f;
 
             GameObject obj = Instantiate(bullet, Vector3.zero, Quaternion.identity, bulletSpawn.transform);
@@ -37,9 +35,5 @@ public class GameCore : MonoBehaviour{
 
             obj.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 3f);
         }
-
-
-
-        
     }
 }
