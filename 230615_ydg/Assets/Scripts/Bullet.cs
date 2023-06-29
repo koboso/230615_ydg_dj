@@ -12,9 +12,9 @@ public class Bullet : MonoBehaviour{
     }
 
 
-    private void Start()
-    {
+    private void Start(){
         Physics2D.IgnoreLayerCollision(6, 6);
+        Physics2D.IgnoreLayerCollision(7, 6);
     }
 
 

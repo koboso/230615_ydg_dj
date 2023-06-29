@@ -34,7 +34,6 @@ public class EnemyObject : MonoBehaviour{
     }
 
     private void MoveEnemy(){
-
         if (this.transform.position.y <= -5f){
             return;
         }
@@ -42,7 +41,6 @@ public class EnemyObject : MonoBehaviour{
         {
             this.transform.position -= new Vector3(0, enemy.Speed * Time.deltaTime, 0);
         }
-
     }
 
 
