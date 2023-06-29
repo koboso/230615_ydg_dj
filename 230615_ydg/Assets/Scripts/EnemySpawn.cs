@@ -7,7 +7,7 @@ public class EnemySpawn : MonoBehaviour{
 
 
     List<GameObject> enemyPool = new List<GameObject>();
-
+    float time = 0f;
 
 
 
@@ -38,21 +38,26 @@ public class EnemySpawn : MonoBehaviour{
         }
         else
         {
-            for (int i = 0; i < enemyPool.Count; i++)
-            {
-                if (enemyPool[i] == null)
+            for (int i = 0; i < enemyPool.Count; i++) {
+
+                if (enemyPool[i].transform.position.y <= -5f)
                 {
-                    enemyPool.RemoveAt(i);
+                    time += Time.deltaTime;
+
+                    if (time >= 1f)
+                    {
+                        time = 0f;
+                        if (enemyPool[i].GetComponent<EnemyObject>().GetEnemy.Hit(1) == false)
+                        {
+                            Destroy(enemyPool[i].gameObject);
+                            enemyPool.RemoveAt(i);
+
+                        }
+                    }
                 }
             }
+          
         }
-
-
-
-
-        //Instantiate()
-
-
 
 
     }

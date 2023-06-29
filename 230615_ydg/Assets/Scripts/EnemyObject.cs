@@ -9,6 +9,15 @@ public class EnemyObject : MonoBehaviour{
 
     Enemy enemy = null;
 
+
+    public Enemy GetEnemy
+    {
+        get
+        {
+            return this.enemy;
+        }
+    }
+
     float time = 0f;
 
     public void SetEnemy(Enemy e){
@@ -33,23 +42,8 @@ public class EnemyObject : MonoBehaviour{
 
     private void MoveEnemy(){
 
-        if (this.transform.position.y <= -5f)
-        {
-            time += Time.deltaTime;
-
-            if(time >= 1f)
-            {
-                Debug.Log("In");
-                time = 0f;
-                if (enemy.Hit(1) == false)
-                {
-                    Destroy(this.gameObject);
-                }
-                else
-                {
-                    Debug.Log("Test");
-                }
-            }
+        if (this.transform.position.y <= -5f){
+            return;
         }
         else
         {

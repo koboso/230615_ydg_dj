@@ -8,20 +8,21 @@ public class Player {
 
 
 
-    public Player(string name, int hp, int atk){
+    public Player( int hp, int atk){
         //this.name = name;
-        this.name = name;
         this.hp = hp;
         this.atk = atk;
     }
 
 
-    public string Name{
+    public int Atk
+    {
         get
         {
-            return this.name;
+            return this.atk;
         }
     }
+   
 
     public int Hp{
         get
