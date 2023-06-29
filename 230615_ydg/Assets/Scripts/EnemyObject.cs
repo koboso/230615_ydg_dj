@@ -9,6 +9,8 @@ public class EnemyObject : MonoBehaviour{
 
     Enemy enemy = null;
 
+    float time = 0f;
+
     public void SetEnemy(Enemy e){
         this.enemy = e;
         this.hpbar.maxValue = enemy.Hp;
@@ -29,12 +31,31 @@ public class EnemyObject : MonoBehaviour{
         MoveEnemy();
     }
 
-
     private void MoveEnemy(){
 
-        if (this.transform.position.y <= -2) return;
+        if (this.transform.position.y <= -5f)
+        {
+            time += Time.deltaTime;
 
-        this.transform.position -= new Vector3(0, enemy.Speed * Time.deltaTime, 0);
+            if(time >= 1f)
+            {
+                Debug.Log("In");
+                time = 0f;
+                if (enemy.Hit(1) == false)
+                {
+                    Destroy(this.gameObject);
+                }
+                else
+                {
+                    Debug.Log("Test");
+                }
+            }
+        }
+        else
+        {
+            this.transform.position -= new Vector3(0, enemy.Speed * Time.deltaTime, 0);
+        }
+
     }
 
 
