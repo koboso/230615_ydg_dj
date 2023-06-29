@@ -14,7 +14,7 @@ public class Item : MonoBehaviour{
     public void OnCollisionEnter2D(Collision2D col){
 
         if(col.collider.gameObject.tag == "Player"){
-            Debug.Log("colision");
+            GameCore.Instance.EarnItem();
         }
 
 
