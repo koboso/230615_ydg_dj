@@ -21,6 +21,8 @@ public class GameCore : MonoBehaviour{
     float delay = 0f;
     private bool isFeverTime = false;
 
+    float fireCondition = 1f;
+
     private void Awake(){
         instance = this;
     }
@@ -35,6 +37,7 @@ public class GameCore : MonoBehaviour{
     public void EarnItem(){
         if (isFeverTime) return;
         isFeverTime = true;
+        fireCondition = 0.09f;
         StartCoroutine(FeverTimeUpdate());
     }
 
@@ -42,6 +45,9 @@ public class GameCore : MonoBehaviour{
     private void StopFeverTime(){
         if (!isFeverTime) return;
         isFeverTime = false;
+
+        fireCondition = 1f;
+
         StopCoroutine(FeverTimeUpdate());
     }
 
@@ -49,17 +55,8 @@ public class GameCore : MonoBehaviour{
     void Update(){
         delay += Time.deltaTime;
 
-        if (isFeverTime)
-        {
-            Debug.Log("Fever Time");
-        }
-        else
-        {
-            Debug.Log("NONE");
-        }
 
-
-        if(delay >= 1f){
+        if(delay >= fireCondition){
             delay = 0f;
 
             GameObject obj = Instantiate(bullet, Vector3.zero, Quaternion.identity, bulletSpawn.transform);
@@ -74,13 +71,10 @@ public class GameCore : MonoBehaviour{
 
     IEnumerator FeverTimeUpdate()
     {
-        float feverTime = 5;
+        float feverTime = 1.5f;
 
-        while (true)
-        {
-
+        while (true){
             feverTime -= Time.deltaTime;
-
             if (feverTime <= 0){
                 StopFeverTime();
                 break;

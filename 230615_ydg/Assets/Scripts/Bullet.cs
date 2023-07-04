@@ -18,6 +18,15 @@ public class Bullet : MonoBehaviour{
     }
 
 
+    void Update(){
+        if (this.transform.position.y >= 5f) Destroy(this.gameObject);
+
+
+
+    }
+
+
+
     public void OnCollisionEnter2D(Collision2D col){
 
         if(col.collider.tag == "Enemy")

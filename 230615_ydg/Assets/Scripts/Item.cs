@@ -15,6 +15,7 @@ public class Item : MonoBehaviour{
 
         if(col.collider.gameObject.tag == "Player"){
             GameCore.Instance.EarnItem();
+            Destroy(gameObject);
         }
 
 
