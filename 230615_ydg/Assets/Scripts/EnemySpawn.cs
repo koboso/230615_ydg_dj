@@ -9,20 +9,29 @@ public class EnemySpawn : MonoBehaviour{
     List<GameObject> enemyPool = new List<GameObject>();
     float time = 0f;
 
+    int currentEnemeyCount = 0;
 
     // Update is called once per frame
     void Update(){
         if (GameCore.Instance.gameStatus != GameCore.GameStatus.Play) return;
 
 
-        if (enemyPool.Count != 2)
-        {
+        if (enemyPool.Count != 10){
+
+
+            if(currentEnemeyCount >= GameCore.Instance.GetWaveEnemey){
+                currentEnemeyCount = 0;
+                GameCore.Instance.IncreaseWave();
+            }
+
+            int level = GameCore.Instance.Wave;
+
             GameObject obj = Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity, this.transform);
-            //obj.transform.position = new Vector3(Random.Range(-3, 3), Random.Range(10, 16), 0);
-            obj.transform.position = new Vector3(0, 5 + Random.Range(1,3), 0);
-            Enemy e = new Enemy(Enemy.EnemyType.Basic, 45, 10, Random.Range(1,3));
+            obj.transform.position = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(6, 8), 0);
+            Enemy e = new Enemy(Enemy.EnemyType.Basic, 10 + (2* level) , 10 + level , Random.Range(1,3));
             obj.GetComponent<EnemyObject>().SetEnemy(e);
             enemyPool.Add(obj);
+            currentEnemeyCount++;
         }
         else
         {

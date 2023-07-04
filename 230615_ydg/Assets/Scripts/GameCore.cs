@@ -30,7 +30,7 @@ public class GameCore : MonoBehaviour{
     [SerializeField] TextMeshProUGUI countdownLabel;
     [SerializeField] TextMeshProUGUI scoreLabel;
     [SerializeField] GameObject[] hpObject;
-
+    [SerializeField] TextMeshProUGUI bestScore;
 
     [Header("Game Core object")]
     [SerializeField] private GameObject player;
@@ -45,9 +45,33 @@ public class GameCore : MonoBehaviour{
 
     Player playerInfo;
 
-
-
     float countdown = 3f;
+
+    private int wave = 0;
+
+    private int[] waveEnemey ={10,20,30,50,100,300,400,500,600,800,1000,1200,1500};
+
+    public int Wave
+    {
+        get
+        {
+            return this.wave;
+        }
+    }
+
+    public int GetWaveEnemey
+    {
+        get
+        {
+            return this.waveEnemey[wave];
+        }
+    }
+
+    public void IncreaseWave(){
+
+        Debug.Log($"Increase Wave ==> {wave}");
+        this.wave += 1;
+    }
 
 
     private void Awake(){
@@ -62,6 +86,10 @@ public class GameCore : MonoBehaviour{
 
 
     private void GameOver(){
+        wave = 0;
+        SaveData();
+        score = 0;
+
         OpenPannel();
         SetGameStatus(GameStatus.GameOver);
         scoreLabel.gameObject.SetActive(false);
@@ -89,8 +117,7 @@ public class GameCore : MonoBehaviour{
         playBtn.onClick.AddListener(PlayGame);
         scoreLabel.gameObject.SetActive(false);
 
-        for(int i = 0; i < hpObject.Length; i++)
-        {
+        for(int i = 0; i < hpObject.Length; i++){
             hpObject[i].gameObject.SetActive(false);
         }
 
@@ -116,6 +143,8 @@ public class GameCore : MonoBehaviour{
     // Update is called once per frame
     void Update(){
 
+        PlayerMove();
+
         if(gameStatus == GameStatus.Init){
             InitScore();
             InitPlayer();
@@ -139,6 +168,12 @@ public class GameCore : MonoBehaviour{
         {
         }
     }
+
+    private void PlayerMove()
+    {
+    
+    }
+
 
     void InitPlayer(){
         playerInfo.Init(3);
@@ -180,6 +215,10 @@ public class GameCore : MonoBehaviour{
 
     private void InitScore(){
         score = 0;
+
+        bestScore.text = $"Best : {LoadData()}";
+
+
     }
 
 
@@ -214,6 +253,20 @@ public class GameCore : MonoBehaviour{
         }
 
     }
+
+
+
+    private void SaveData(){
+        PlayerPrefs.SetInt("_Score", score);
+        PlayerPrefs.Save();
+    }
+
+
+    private int LoadData(){
+         return PlayerPrefs.GetInt("_Score", 0);
+    }
+
+
 
 
 }

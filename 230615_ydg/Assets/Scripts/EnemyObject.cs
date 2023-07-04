@@ -37,7 +37,7 @@ public class EnemyObject : MonoBehaviour{
 
     private void MoveEnemy(){
         if (this.transform.position.y <= -5f){
-            return;
+            Destroy(this.gameObject);
         }
         else
         {
