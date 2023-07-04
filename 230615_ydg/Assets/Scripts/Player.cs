@@ -31,6 +31,11 @@ public class Player {
         }
     }
 
+    public void Init(int hp)
+    {
+        this.hp = hp;
+    }
+
 
     public void HitDamage(int number = 1)
     {

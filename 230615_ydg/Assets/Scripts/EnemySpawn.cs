@@ -20,7 +20,7 @@ public class EnemySpawn : MonoBehaviour{
             GameObject obj = Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity, this.transform);
             //obj.transform.position = new Vector3(Random.Range(-3, 3), Random.Range(10, 16), 0);
             obj.transform.position = new Vector3(0, 5 + Random.Range(1,3), 0);
-            Enemy e = new Enemy(Enemy.EnemyType.Basic, 15, 10, Random.Range(1,3));
+            Enemy e = new Enemy(Enemy.EnemyType.Basic, 45, 10, Random.Range(1,3));
             obj.GetComponent<EnemyObject>().SetEnemy(e);
             enemyPool.Add(obj);
         }

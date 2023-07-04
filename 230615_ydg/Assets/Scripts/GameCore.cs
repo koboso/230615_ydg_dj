@@ -28,19 +28,23 @@ public class GameCore : MonoBehaviour{
     [SerializeField] Button playBtn;
     [SerializeField] GameObject countdownPannel;
     [SerializeField] TextMeshProUGUI countdownLabel;
+    [SerializeField] TextMeshProUGUI scoreLabel;
+    [SerializeField] GameObject[] hpObject;
 
 
     [Header("Game Core object")]
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject bulletSpawn;
     [SerializeField] private GameObject bullet;
-    
-    Player playerInfo;
 
+
+    int score;
     float delay = 0f;
     private bool isFeverTime = false;
-
     float fireCondition = 1f;
+
+    Player playerInfo;
+
 
 
     float countdown = 3f;
@@ -60,6 +64,7 @@ public class GameCore : MonoBehaviour{
     private void GameOver(){
         OpenPannel();
         SetGameStatus(GameStatus.GameOver);
+        scoreLabel.gameObject.SetActive(false);
     }
 
 
@@ -80,8 +85,15 @@ public class GameCore : MonoBehaviour{
 
     // Core Method
     void Start(){
-        playerInfo = new Player(5, 10);
+        playerInfo = new Player(3, 10);
         playBtn.onClick.AddListener(PlayGame);
+        scoreLabel.gameObject.SetActive(false);
+
+        for(int i = 0; i < hpObject.Length; i++)
+        {
+            hpObject[i].gameObject.SetActive(false);
+        }
+
     }
 
 
@@ -97,9 +109,7 @@ public class GameCore : MonoBehaviour{
     private void StopFeverTime(){
         if (!isFeverTime) return;
         isFeverTime = false;
-
         fireCondition = 1f;
-
         StopCoroutine(FeverTimeUpdate());
     }
 
@@ -107,6 +117,8 @@ public class GameCore : MonoBehaviour{
     void Update(){
 
         if(gameStatus == GameStatus.Init){
+            InitScore();
+            InitPlayer();
             ShowCountDownUI();
         }
         else if(gameStatus == GameStatus.Play){
@@ -123,12 +135,51 @@ public class GameCore : MonoBehaviour{
                 obj.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 3f);
             }
         }
+        else
+        {
+        }
+    }
 
+    void InitPlayer(){
+        playerInfo.Init(3);
+    }
+
+    // hp 초기화 해주는 곳.
+    void InitHpObject()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            hpObject[i].gameObject.SetActive(true);
+        }
     }
 
 
     void ShowCountDownUI(){
+        if (!countdownPannel.gameObject.activeSelf) countdownPannel.gameObject.SetActive(true);
 
+
+        countdown -= Time.deltaTime;
+        int number = (int)countdown+1;
+        countdownLabel.text = number.ToString();
+
+        if(countdown <= 0f){
+            countdown = 3f;
+            countdownPannel.gameObject.SetActive(false);
+            SetGameStatus(GameStatus.Play);
+            scoreLabel.gameObject.SetActive(true);
+            InitHpObject();
+
+        }
+
+    }
+
+    public void IncreaseScore(int v = 10){
+        score += v;
+        scoreLabel.text = $"Score : {score}";
+    }
+
+    private void InitScore(){
+        score = 0;
     }
 
 
@@ -148,6 +199,20 @@ public class GameCore : MonoBehaviour{
             }
             yield return new WaitForSeconds(Time.deltaTime);
         }
+    }
+
+    public void HitDamage(){
+        playerInfo.HitDamage();
+
+        int hpIndex = playerInfo.Hp -1;
+
+        if(hpIndex == -1){
+            GameOver();
+        }
+        else{
+            hpObject[hpIndex].gameObject.SetActive(false);
+        }
+
     }
 
 

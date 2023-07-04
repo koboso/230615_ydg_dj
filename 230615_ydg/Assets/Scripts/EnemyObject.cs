@@ -50,8 +50,20 @@ public class EnemyObject : MonoBehaviour{
 
         if (enemy.Hp - dmg <= 0) Destroy(this.gameObject);
 
-        enemy.Hit(dmg);
+        if (enemy.Hit(dmg) == false){
+            GameCore.Instance.IncreaseScore();
+        }
         this.hpbar.value = enemy.Hp;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision){
+
+        if(collision.gameObject.tag == "Player"){
+            GameCore.Instance.HitDamage();
+
+            Destroy(this.gameObject);
+        }
+        
     }
 
 
