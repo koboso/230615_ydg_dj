@@ -10,22 +10,10 @@ public class EnemySpawn : MonoBehaviour{
     float time = 0f;
 
 
-
-    private void Start(){
-
-
-
-        /*for(int i = 0; i< 3; i++)
-        {
-            GameObject obj = Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity, this.transform);
-            obj.transform.position = new Vector3(Random.Range(-2,2), 5 , 0);
-            Enemy e = new Enemy(Enemy.EnemyType.Basic, 5, 10, 2);
-            obj.GetComponent<EnemyObject>().SetEnemy(e);
-        }*/
-    }
-
     // Update is called once per frame
     void Update(){
+        if (GameCore.Instance.gameStatus != GameCore.GameStatus.Play) return;
+
 
         if (enemyPool.Count != 2)
         {

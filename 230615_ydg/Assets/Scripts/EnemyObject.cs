@@ -30,6 +30,8 @@ public class EnemyObject : MonoBehaviour{
 
     private void Update(){
         if (enemy == null) return;
+
+        if (GameCore.Instance.gameStatus != GameCore.GameStatus.Play) Destroy(this.gameObject);
         MoveEnemy();
     }
 

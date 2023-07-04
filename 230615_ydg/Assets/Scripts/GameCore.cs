@@ -1,8 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameCore : MonoBehaviour{
+
+    public enum GameStatus{
+        Ready,
+        Init,
+        Play,
+        GameOver,
+    }
+
+    public GameStatus gameStatus;
 
     private static GameCore instance;
 
@@ -11,7 +22,15 @@ public class GameCore : MonoBehaviour{
             return instance;
         }
     }
-    
+
+    [Header("Game UI")]
+    [SerializeField] GameObject pannel;
+    [SerializeField] Button playBtn;
+    [SerializeField] GameObject countdownPannel;
+    [SerializeField] TextMeshProUGUI countdownLabel;
+
+
+    [Header("Game Core object")]
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject bulletSpawn;
     [SerializeField] private GameObject bullet;
@@ -23,14 +42,46 @@ public class GameCore : MonoBehaviour{
 
     float fireCondition = 1f;
 
+
+    float countdown = 3f;
+
+
     private void Awake(){
         instance = this;
     }
 
+    // UI Method
+    public void PlayGame(){
+        CloseGamePannel();
+        SetGameStatus(GameStatus.Init);
+    }
 
-    // Start is called before the first frame update
+
+    private void GameOver(){
+        OpenPannel();
+        SetGameStatus(GameStatus.GameOver);
+    }
+
+
+
+    private void OpenPannel(){
+        pannel.gameObject.SetActive(true);
+    }
+
+    private void CloseGamePannel(){
+        pannel.gameObject.SetActive(false);
+    }
+
+
+    public void SetGameStatus(GameStatus status){
+        this.gameStatus = status;
+    }
+
+
+    // Core Method
     void Start(){
         playerInfo = new Player(5, 10);
+        playBtn.onClick.AddListener(PlayGame);
     }
 
 
@@ -40,6 +91,7 @@ public class GameCore : MonoBehaviour{
         fireCondition = 0.09f;
         StartCoroutine(FeverTimeUpdate());
     }
+
 
 
     private void StopFeverTime(){
@@ -53,20 +105,32 @@ public class GameCore : MonoBehaviour{
 
     // Update is called once per frame
     void Update(){
-        delay += Time.deltaTime;
 
-
-        if(delay >= fireCondition){
-            delay = 0f;
-
-            GameObject obj = Instantiate(bullet, Vector3.zero, Quaternion.identity, bulletSpawn.transform);
-            obj.transform.position = player.transform.position;
-            int dmg = playerInfo.Atk;
-            obj.GetComponent<Bullet>().InitBullet(dmg);
-
-            obj.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 3f);
+        if(gameStatus == GameStatus.Init){
+            ShowCountDownUI();
         }
+        else if(gameStatus == GameStatus.Play){
+
+            delay += Time.deltaTime;
+            if(delay >= fireCondition){
+                delay = 0f;
+
+                GameObject obj = Instantiate(bullet, Vector3.zero, Quaternion.identity, bulletSpawn.transform);
+                obj.transform.position = player.transform.position;
+                int dmg = playerInfo.Atk;
+                obj.GetComponent<Bullet>().InitBullet(dmg);
+
+                obj.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 3f);
+            }
+        }
+
     }
+
+
+    void ShowCountDownUI(){
+
+    }
+
 
 
     IEnumerator FeverTimeUpdate()
@@ -74,6 +138,9 @@ public class GameCore : MonoBehaviour{
         float feverTime = 1.5f;
 
         while (true){
+            if (gameStatus != GameStatus.Play) break;
+
+
             feverTime -= Time.deltaTime;
             if (feverTime <= 0){
                 StopFeverTime();

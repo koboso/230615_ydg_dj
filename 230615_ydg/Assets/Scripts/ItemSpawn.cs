@@ -28,28 +28,26 @@ public class ItemSpawn : MonoBehaviour{
         while (true)
         {
 
-            //yield return new WaitForSeconds(5f);
-
-            //   »ý¼º
-
-            if (itemList.Count == 0)
+            if (GameCore.Instance.gameStatus == GameCore.GameStatus.Play)
             {
-                itemSpawnTime += Time.deltaTime;
-            }
-            else
-            {
-                if (itemList[0] == null && itemList.Count == 1)
-                {
-                    itemList.Clear();
+                if (itemList.Count == 0){
+                    itemSpawnTime += Time.deltaTime;
                 }
-            }
+                else
+                {
+                    if (itemList[0] == null && itemList.Count == 1)
+                    {
+                        itemList.Clear();
+                    }
+                }
 
-            if (itemSpawnTime >= 5f)
-            {
-                itemSpawnTime = 0f;
-                ItemCreator();
-            }
+                if (itemSpawnTime >= 5f)
+                {
+                    itemSpawnTime = 0f;
+                    ItemCreator();
+                }
 
+            }
 
             yield return new WaitForSeconds(Time.deltaTime);
         }

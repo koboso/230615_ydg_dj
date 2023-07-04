@@ -19,6 +19,9 @@ public class Bullet : MonoBehaviour{
 
 
     void Update(){
+
+        if (GameCore.Instance.gameStatus != GameCore.GameStatus.Play) Destroy(this.gameObject);
+
         if (this.transform.position.y >= 5f) Destroy(this.gameObject);
 
 
