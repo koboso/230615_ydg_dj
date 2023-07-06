@@ -34,6 +34,11 @@ public class GameCore : MonoBehaviour
     [SerializeField] TextMeshProUGUI countdownLabel;
     [SerializeField] TextMeshProUGUI scoreLabel;
     [SerializeField] GameObject[] hpObject;
+
+
+    [SerializeField] GameObject ingameBestScorePannel;
+    [SerializeField] GameObject ingameScorePannel;
+
     [SerializeField] TextMeshProUGUI bestScoreLabel;
     [SerializeField] TextMeshProUGUI ingameBestScoreLabel;
 
@@ -113,7 +118,13 @@ public class GameCore : MonoBehaviour
 
         OpenPannel();
         SetGameStatus(GameStatus.GameOver);
-        scoreLabel.gameObject.SetActive(false);
+
+        ingameBestScorePannel.gameObject.SetActive(false);
+        ingameScorePannel.gameObject.SetActive(false);
+
+        for(int i = 0; i < hpObject.Length; i++){
+            if (hpObject[i].gameObject.activeSelf) hpObject[i].SetActive(false);
+        }
     }
 
 
@@ -151,7 +162,8 @@ public class GameCore : MonoBehaviour
         scoreLabel.gameObject.SetActive(false);
 
 
-        if (ingameBestScoreLabel.gameObject.activeSelf) ingameBestScoreLabel.gameObject.SetActive(false);
+        if (ingameScorePannel.gameObject.activeSelf) ingameScorePannel.gameObject.SetActive(false);
+        if (ingameBestScorePannel.gameObject.activeSelf) ingameBestScorePannel.gameObject.SetActive(false);
 
         for (int i = 0; i < hpObject.Length; i++)
         {
@@ -189,8 +201,8 @@ public class GameCore : MonoBehaviour
 
         if (gameStatus == GameStatus.Init)
         {
-            if (ingameBestScoreLabel.gameObject.activeSelf) ingameBestScoreLabel.gameObject.SetActive(false);
-
+            if (ingameScorePannel.gameObject.activeSelf) ingameScorePannel.gameObject.SetActive(false);
+            if (ingameBestScorePannel.gameObject.activeSelf) ingameBestScorePannel.gameObject.SetActive(false);
             InitScore();
             InitPlayer();
             ShowCountDownUI();
@@ -210,7 +222,7 @@ public class GameCore : MonoBehaviour
                 int dmg = playerInfo.Atk;
                 obj.GetComponent<Bullet>().InitBullet(dmg);
 
-                obj.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 3f);
+                obj.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 10f);
             }
         }
     }
@@ -264,10 +276,13 @@ public class GameCore : MonoBehaviour
             countdown = 3f;
             countdownPannel.gameObject.SetActive(false);
             SetGameStatus(GameStatus.Play);
-            scoreLabel.gameObject.SetActive(true);
             InitHpObject();
 
             bestScoreValue = LoadData();
+
+            if (!ingameScorePannel.gameObject.activeSelf) ingameScorePannel.gameObject.SetActive(true);
+            if (!ingameBestScorePannel.gameObject.activeSelf) ingameBestScorePannel.gameObject.SetActive(true);
+
         }
 
     }
