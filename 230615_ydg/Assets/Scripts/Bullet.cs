@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour{
 
     [SerializeField] private int dmg;
-
+    [SerializeField] private GameObject effect;
 
     public void InitBullet(int damage){
         this.dmg = damage;
@@ -36,6 +36,11 @@ public class Bullet : MonoBehaviour{
         {
             col.collider.gameObject.GetComponent<EnemyObject>().Hit(this.dmg);
             Destroy(this.gameObject);
+
+            GameObject effectObject = Instantiate(effect, Vector3.zero, Quaternion.identity, GameCore.Instance.BulletSpawn.transform);
+            effectObject.transform.position = col.transform.position;
+
+
         }
 
     }

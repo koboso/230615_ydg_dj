@@ -4,101 +4,64 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour{
 
-    public GameObject player;
-
-
-    int step = 0;
-
     void Start(){
         
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update(){
+
+        if (GameCore.Instance.gameStatus != GameCore.GameStatus.Play) return;
 
 
-        if (step == 1)
+#if UNITY_EDITOR
+        WindowPlatform();
+#elif PLATFORM_ANDROID
+        AndroidPlatform();
+#endif
+    }
+
+    bool isDragging = false;
+
+    Vector3 currentPos;
+
+    private void WindowPlatform(){
+
+        if (Input.GetMouseButtonDown(0))
         {
-            if(player.transform.position.x <= -2f)
-            {
-                step = 0;
-            }
-            else
-            {
-                player.transform.position -= new Vector3(3 * Time.deltaTime, 0, 0);
-            }
+            isDragging = true;
+
+            currentPos = this.transform.position - ConvertMousePosition();
 
         }
-        
-        if(step == 2)
+        else if(Input.GetMouseButtonUp(0))
         {
-            if(player.transform.position.x >= 2f)
-            {
-                step = 0;
-            }
-            else
-            {
-                player.transform.position += new Vector3(3 * Time.deltaTime, 0, 0);
-            }
+            isDragging = false;
+        }
+
+
+
+        if (isDragging)
+        {
+            this.transform.position = ConvertMousePosition() + currentPos;
         }
 
     }
 
 
-    public void LeftMove()
-    {
-        step = 1;
+    private Vector3 ConvertMousePosition(){
+        Vector3 mousePosition = Input.mousePosition;
+
+        mousePosition.z = -Camera.main.transform.position.z;
+
+        return Camera.main.ScreenToWorldPoint(mousePosition);
     }
 
 
-    public void RightMove()
+    private void AndroidPlatform()
     {
-        step = 2;
+
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    int  func(int a, int b)
-    {
-        return a + b;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

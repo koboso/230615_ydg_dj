@@ -42,6 +42,7 @@ public class GameCore : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject bulletSpawn;
     [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject hitEffectExplosion;
 
 
     private int score = 0;
@@ -131,6 +132,14 @@ public class GameCore : MonoBehaviour
     public void SetGameStatus(GameStatus status)
     {
         this.gameStatus = status;
+    }
+
+    public GameObject BulletSpawn
+    {
+        get
+        {
+            return this.bulletSpawn;
+        }
     }
 
 
@@ -297,6 +306,14 @@ public class GameCore : MonoBehaviour
 
     public void HitDamage()
     {
+        // Import
+
+
+         GameObject hitEffect = Instantiate(hitEffectExplosion, Vector3.zero, Quaternion.identity, bulletSpawn.transform);
+        hitEffect.transform.position = player.transform.position;
+
+
+
         playerInfo.HitDamage();
 
         int hpIndex = playerInfo.Hp - 1;
